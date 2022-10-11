@@ -45,18 +45,13 @@ int main(void)
     do
     {
         //Note to future -- Fix this 
-        printf
-        ("
-            1 - add a new car to the available-for-rent list,\n
-            add a re
-            asd
-            adturned car to the available-for-rent list,\n
-            (c) add a returned car to the repair list,\n
-            (d) transfer a car from the repair list to the available-for-rent list,\n
-            (e) rent the first available car,\n
-            (f) print all the lists,\n
-            (g) quit"
-        );
+        printf("1");
+        printf("2");
+        printf("3");
+        printf("4");
+        printf("5");
+        printf("6");
+        printf("7");
 
         switch (x)
         {
