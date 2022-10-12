@@ -22,11 +22,9 @@ typedef struct Repairing
 }Repair;
 
 // Add a new car to the available for rent list (Least miles front of list)
-avRent * createRentalCar(avRent * carList)
+avRent * createRentalCar()
 {
     avRent *newCar = malloc(sizeof(avRent));
-
-    avRent *temp = carList;
 
     printf("Enter plate: ");
     fgets(newCar -> plate , sizeof(newCar -> plate), stdin);
