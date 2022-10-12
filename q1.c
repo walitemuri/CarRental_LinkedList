@@ -3,7 +3,7 @@
 
 typedef struct AvailableRent
 {
-    long int mileage;
+    int mileage;
     char plate[160];
     struct AvailableRent *next;
 }avRent;
@@ -22,7 +22,25 @@ typedef struct Repairing
 }Repair;
 
 // Add a new car to the available for rent list (Least miles front of list)
+avRent * createRentalCar(avRent * carList)
+{
+    avRent *newCar = malloc(sizeof(avRent));
 
+    avRent *temp = carList;
+
+    printf("Enter plate: ");
+    fgets(newCar -> plate , sizeof(newCar -> plate), stdin);
+
+    printf("\nEnter mileage: ");
+    scanf("%d", &(newCar -> mileage));
+
+    newCar -> next = NULL;
+}
+
+void addCarToRentedList (avRent ** carList , avRent * node)
+{
+
+}
 // Add a returned car to the available-for-rent list
 
 // Add a returned car to the repair list,
