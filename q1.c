@@ -37,23 +37,22 @@ struct Repairing
 
 int main(void)
 {
-
-    int x;
-
-    x = scanf("%d", &x);
+    int userInput;
 
     do
     {
-        //Note to future -- Fix this 
-        printf("1");
-        printf("2");
-        printf("3");
-        printf("4");
-        printf("5");
-        printf("6");
-        printf("7");
+        //Print Menu
+        printf("1 - Add a new car to the available for rent list\n");
+        printf("2 - Add a returned car to the available-for-rent list\n");
+        printf("3 - Add a returned car to the repair list\n");
+        printf("4 - Transfer a car from the repair list to the available-for-rent list\n");
+        printf("5 - Rent the first available car\n");
+        printf("6 - Print all the lists\n");
+        printf("7 - Quit\n");
 
-        switch (x)
+        userInput = scanf("%d", &userInput);
+
+        switch (userInput)
         {
         case 1:
             printf("");
@@ -80,5 +79,5 @@ int main(void)
             break;
         }
 
-    } while (x != 7);
+    } while (userInput != 7);
 }
