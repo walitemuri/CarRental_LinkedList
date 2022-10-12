@@ -35,7 +35,7 @@ avRent * createRentalCar()
     newCar -> next = NULL;
 }
 
-//Add car to list function (least miles first)
+//Add car to the list function (least miles first)
 void addCarToRentedList (avRent ** carList , avRent * node)
 {
     node -> next = NULL;
