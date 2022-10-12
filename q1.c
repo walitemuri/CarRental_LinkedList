@@ -1,27 +1,27 @@
 /* Wali Temuri 1183379 */
 #include <stdio.h>
 
-struct AvailableRent
+typedef struct AvailableRent
 {
     long int mileage;
     char plate[160];
     struct AvailableRent *next;
-};
+}avRent;
 
-struct Rented
+typedef struct Rented
 {
     int expectedReturn;
     char plate[160];
     struct Rented *next;
-};
+}Rented;
 
-struct Repairing
+typedef struct Repairing
 {
     char plate[160];
     struct Repairing *next;
-};
+}Repair;
 
-// Add a new car to the available for rent list
+// Add a new car to the available for rent list (Least miles front of list)
 
 // Add a returned car to the available-for-rent list
 
@@ -38,10 +38,12 @@ struct Repairing
 int main(void)
 {
     int userInput;
+    avRent * avPtr = NULL;
+    avRent * avHead = NULL;
 
     do
     {
-        //Print Menu
+        // Print Menu
         printf("1 - Add a new car to the available for rent list\n");
         printf("2 - Add a returned car to the available-for-rent list\n");
         printf("3 - Add a returned car to the repair list\n");
