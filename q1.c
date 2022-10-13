@@ -1,5 +1,6 @@
 /* Wali Temuri 1183379 */
 #include <stdio.h>
+#include <stdbool.h>
 
 typedef struct AvailableRent
 {
@@ -60,11 +61,11 @@ void addCarToRentedList (avRent ** carList , avRent * node)
 
 }
 // Add a returned car to the available-for-rent list
-void addReturnedCar (Rented * car, Rented ** carList, avRent ** carList)
+void addReturnedCar (Rented ** carList, avRent ** rentList)
 {
-    Rented * returnedCar = malloc(sizeof(Rented));
     char *plateInput;
     int mileage;
+    bool isValid = false;
 
     printf("Enter plate: ");
     fgets(plateInput, 150, stdin);
@@ -74,13 +75,29 @@ void addReturnedCar (Rented * car, Rented ** carList, avRent ** carList)
 
     Rented * temp = *carList;
 
-    while (temp -> next != NULL)
+    
+    //Fix Error: wrong linked list is transfered, need to make it available for rent not Rented
+    while (temp != NULL)
     {
         if (plateInput == temp -> plate)
         {
             rmReturnedCar(temp);
-            //
+            
+            avRent * returnedCar = malloc(sizeof(avRent));
+
+            strcpy(plateInput, returnedCar -> plate);
+            returnedCar -> mileage = mileage;
+
+            addCarToRentedList(rentList, returnedCar);
+            
+            isValid = true;
         }
+    }
+
+    if (!isValid)
+    {
+        printf("Invalid Input\n");
+        return;
     }
 }
 // Add a returned car to the repair list,
