@@ -12,6 +12,7 @@ typedef struct Rented
 {
     int expectedReturn;
     char plate[160];
+    int mileage;
     struct Rented *next;
 }Rented;
 
@@ -59,7 +60,14 @@ void addCarToRentedList (avRent ** carList , avRent * node)
 
 }
 // Add a returned car to the available-for-rent list
+void addReturnedCar (Rented * car, Rented ** carList)
+{
+    Rented * returnedCar = malloc(sizeof(Rented));
+    char *plateInput;
 
+    printf("Enter plate: ");
+    fgets(plateInput, 150, stdin);
+}
 // Add a returned car to the repair list,
 
 // Transfer a car from the repair list to the available-for-rent list,
