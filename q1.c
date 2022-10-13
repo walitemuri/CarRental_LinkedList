@@ -60,13 +60,28 @@ void addCarToRentedList (avRent ** carList , avRent * node)
 
 }
 // Add a returned car to the available-for-rent list
-void addReturnedCar (Rented * car, Rented ** carList)
+void addReturnedCar (Rented * car, Rented ** carList, avRent ** carList)
 {
     Rented * returnedCar = malloc(sizeof(Rented));
     char *plateInput;
+    int mileage;
 
     printf("Enter plate: ");
     fgets(plateInput, 150, stdin);
+
+    printf("\nEnter Mileage: ");
+    scanf("%d" , &mileage);
+
+    Rented * temp = *carList;
+
+    while (temp -> next != NULL)
+    {
+        if (plateInput == temp -> plate)
+        {
+            rmReturnedCar(temp);
+            //
+        }
+    }
 }
 // Add a returned car to the repair list,
 
