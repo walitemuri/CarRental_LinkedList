@@ -38,7 +38,7 @@ avRent * createRentalCar()
 }
 
 //Add car to the list function (least miles first)
-void addCarToRentedList (avRent ** carList , avRent * node)
+void addCarToAvRentList (avRent ** carList , avRent * node)
 {
     node -> next = NULL;
 
@@ -88,7 +88,7 @@ void addReturnedCar (Rented ** carList, avRent ** rentList)
             strcpy(plateInput, returnedCar -> plate);
             returnedCar -> mileage = mileage;
 
-            addCarToRentedList(rentList, returnedCar);
+            addCarToAvRentList(rentList, returnedCar);
             
             isValid = true;
         }
