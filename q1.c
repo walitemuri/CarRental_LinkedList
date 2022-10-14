@@ -61,9 +61,9 @@ void addCarToAvRentList (avRent ** carList , avRent * node)
 
 }
 // Add a returned car to the available-for-rent list
-void addReturnedCar (Rented ** carList, avRent ** rentList)
+void addReturnedCarToAv (Rented ** carList, avRent ** rentList)
 {
-    char *plateInput;
+    char *plateInput = (char*)malloc(sizeof(char) * 50);
     int mileage;
     bool isValid = false;
 
@@ -81,7 +81,7 @@ void addReturnedCar (Rented ** carList, avRent ** rentList)
     {
         if (plateInput == temp -> plate)
         {
-            rmReturnedCar(temp);
+            rmReturnedCar(temp, plateInput);
             
             avRent * returnedCar = malloc(sizeof(avRent));
 
@@ -91,6 +91,7 @@ void addReturnedCar (Rented ** carList, avRent ** rentList)
             addCarToAvRentList(rentList, returnedCar);
             
             isValid = true;
+            free(plateInput);
         }
     }
 
@@ -100,9 +101,28 @@ void addReturnedCar (Rented ** carList, avRent ** rentList)
         return;
     }
 }
-// Add a returned car to the repair list,
 
-// Transfer a car from the repair list to the available-for-rent list,
+//Remove Returned Car from Rented list
+void deleteRentedCar (Rented ** rented, char * plate)
+{
+    Rented *temp = *rented;
+
+    while(temp != NULL)
+    {
+        if (strcmp(temp -> plate, plate))
+        {
+            
+        }
+    }
+}
+
+// Add a returned car to the repair list,
+void addReturnedCarToRep (Rented ** currRentedList , Repair ** repairList)
+{
+
+}
+
+    // Transfer a car from the repair list to the available-for-rent list,
 
 // Rent the first available car,
 
