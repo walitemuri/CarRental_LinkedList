@@ -1,7 +1,13 @@
 /* Wali Temuri 1183379 */
+
 #include <stdio.h>
 #include <stdbool.h>
 
+/*
+Data Structure: Linked List
+Purpose: List for cars that are available for rent
+Stores: Mileage, Car Plate, Address of next node
+*/
 typedef struct AvailableRent
 {
     int mileage;
@@ -9,6 +15,11 @@ typedef struct AvailableRent
     struct AvailableRent *next;
 }avRent;
 
+/*
+Data Structure: Linked List
+Purpose: List for cars that are currently rented
+Stores: Mileage, Car Plate, Expected Return (yymmdd), Address of next node
+*/
 typedef struct Rented
 {
     int expectedReturn;
@@ -17,17 +28,28 @@ typedef struct Rented
     struct Rented *next;
 }Rented;
 
+/*
+Data Structure: Linked List
+Purpose: List for cars that are currently under repair
+Stores: Car Plate, Address of next node
+*/
 typedef struct Repairing
 {
     char plate[160];
     struct Repairing *next;
 }Repair;
 
-// Add a new car to the available for rent list (Least miles front of list)
+/*
+Function: Creates a new rental car node for available rent list
+Input: void
+Output: avRent *
+*/
 avRent * createRentalCar()
 {
+    //Allocating memory for new node
     avRent *newCar = malloc(sizeof(avRent));
 
+    //Gathering Inputs
     printf("Enter plate: ");
     fgets(newCar -> plate , sizeof(newCar -> plate), stdin);
 
@@ -35,22 +57,31 @@ avRent * createRentalCar()
     scanf("%d", &(newCar -> mileage));
 
     newCar -> next = NULL;
+
+    return newCar;
 }
 
-//Add car to the list function (least miles first)
+/*
+Function: Adds a rental car to the Available to rent linked list given node
+Input: avRent ** carList, avRent * node
+Output: void
+*/
 void addCarToAvRentList (avRent ** carList , avRent * node)
 {
     node -> next = NULL;
 
+    //Check for Empty List
     if (*carList == NULL)
     {
         *carList = node;
         return;
     }
 
+    //Declaring key to allow sorting to occur 
     avRent * temp = *carList;
     int key = node -> mileage;
 
+    //Inserting node in its proper order (ascending)
     while(temp -> next != NULL && (temp -> next) -> mileage < key)
     {
         temp = temp -> next;
@@ -60,13 +91,19 @@ void addCarToAvRentList (avRent ** carList , avRent * node)
     temp -> next = node;
 
 }
-// Add a returned car to the available-for-rent list
+
+/*
+Function: Adds a returned car to the Available to rent list
+Input: Rented ** carList, avRent ** rentList
+Output: void
+*/
 void addReturnedCarToAv (Rented ** carList, avRent ** rentList)
 {
     char *plateInput = (char*)malloc(sizeof(char) * 50);
     int mileage;
     bool isValid = false;
 
+    //Gathering Inputs
     printf("Enter plate: ");
     fgets(plateInput, 150, stdin);
 
@@ -75,8 +112,7 @@ void addReturnedCarToAv (Rented ** carList, avRent ** rentList)
 
     Rented * temp = *carList;
 
-    
-    //Fix Error: wrong linked list is transfered, need to make it available for rent not Rented
+    //Checks for matching plates in input on the rented list
     while (temp != NULL)
     {
         if (plateInput == temp -> plate)
@@ -102,8 +138,12 @@ void addReturnedCarToAv (Rented ** carList, avRent ** rentList)
     }
 }
 
-//Remove Returned Car from Rented list
-void deleteRentedCar (Rented ** rented, char * plate)
+/*
+Function: Removes rented car from linked list when it is returend
+Input: Rented ** rented, char * plate
+Output: void
+*/
+void rmReturnedCar (Rented ** rented, char * plate)
 {
     Rented *temp = *rented;
     int numCars = 0;
@@ -140,6 +180,7 @@ void deleteRentedCar (Rented ** rented, char * plate)
         }
 
         temp = *rented;
+
         //Increment to the node before the targetted node
         for (int i = 0; i < target - 1; i++)
         {
