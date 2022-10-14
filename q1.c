@@ -106,13 +106,51 @@ void addReturnedCarToAv (Rented ** carList, avRent ** rentList)
 void deleteRentedCar (Rented ** rented, char * plate)
 {
     Rented *temp = *rented;
+    int numCars = 0;
+    int target = 0;
 
     while(temp != NULL)
     {
-        if (strcmp(temp -> plate, plate))
+        numCars++;
+        temp = temp -> next;
+    }
+
+    temp = *rented;
+
+
+    if (numCars == 1)
+    {
+        (*rented) = (*rented) -> next;
+        free(temp);
+        return;
+    }
+    else
+    {
+        while (temp != NULL)
         {
-            
+            target++;
+
+            if (strcmp(temp -> plate, plate) == 0)
+            {
+                break;
+            }
+
+            temp = temp -> next;
+
         }
+
+        temp = *rented;
+        //Increment to the node before the targetted node
+        for (int i = 0; i < target - 1; i++)
+        {
+            temp = temp -> next;
+        }
+
+        Rented * delete = temp -> next;
+        temp -> next = temp -> next -> next;
+        delete -> next = NULL;
+        free(delete);
+        free(temp);
     }
 }
 
