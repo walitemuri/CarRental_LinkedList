@@ -36,6 +36,7 @@ Stores: Car Plate, Address of next node
 typedef struct Repairing
 {
     char plate[160];
+    int mileage;
     struct Repairing *next;
 }Repair;
 
@@ -115,9 +116,9 @@ void addReturnedCarToAv (Rented ** carList, avRent ** rentList)
     //Checks for matching plates in input on the rented list
     while (temp != NULL)
     {
-        if (plateInput == temp -> plate)
+        if (strcmp(plateInput, temp -> plate) == 0)
         {
-            rmReturnedCar(temp, plateInput);
+            rmReturnedCar(*carList, plateInput);
             
             avRent * returnedCar = malloc(sizeof(avRent));
 
@@ -198,10 +199,53 @@ void rmReturnedCar (Rented ** rented, char * plate)
 // Add a returned car to the repair list,
 void addReturnedCarToRep (Rented ** currRentedList , Repair ** repairList)
 {
+    char * plateInput = malloc(sizeof(char)* 50);
+    int mileage;
 
+     //Gathering Inputs
+    printf("Enter plate: ");
+    fgets(plateInput, 150, stdin);
+
+    printf("\nEnter Mileage: ");
+    scanf("%d" , &mileage);
+
+    Rented * temp = *currRentedList;
+
+    if (checkValidReturnPlate(temp, plateInput))
+    {
+        rmReturnedCar(*currRentedList, plateInput);
+
+
+    }
+    else
+    {
+        printf("Invalid Input\n");
+    }
 }
 
-    // Transfer a car from the repair list to the available-for-rent list,
+bool checkValidReturnPlate (Rented * currRentedList, char * plate)
+{
+    Rented * temp = currRentedList;
+
+    while (temp != NULL)
+    {
+        if (strcmp(plate, temp -> plate) == 0)
+        {
+            return true;
+        }
+
+        temp = temp -> next;
+    }
+
+    return false;
+}
+
+void addNodeToRepairList (Repair ** repairList, Repair * node)
+{
+    
+}
+
+// Transfer a car from the repair list to the available-for-rent list,
 
 // Rent the first available car,
 
