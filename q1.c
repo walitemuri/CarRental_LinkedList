@@ -242,7 +242,21 @@ bool checkValidReturnPlate (Rented * currRentedList, char * plate)
 
 void addNodeToRepairList (Repair ** repairList, Repair * node)
 {
-    
+    node -> next = NULL;
+
+    if (*repairList == NULL)
+    {
+        *repairList = node;
+    }
+
+    Repair * temp = *repairList;
+
+    while(temp->next == NULL)
+    {
+        temp = temp -> next;
+    }
+
+    temp->next = node;
 }
 
 // Transfer a car from the repair list to the available-for-rent list,
