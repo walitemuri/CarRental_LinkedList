@@ -380,10 +380,19 @@ bool checkValidRepairedPlate (char *plateInput, Repair * repairList, int * carIn
     return false;
 }
 
-//
+void addCarToRentList (Rented ** rentList, Rented * node)
+{
+    
+}
 
 // Rent the first available car,
+void rentFirstAvailableCar(avRent ** AvList, Rented ** RentedList)
+{
+    int returnDate;
 
+    printf("Enter return date: ");
+    scanf("%d", &returnDate);
+}
 // Print all the lists
 
 // Quit
