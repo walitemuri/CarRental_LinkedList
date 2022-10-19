@@ -267,6 +267,90 @@ void addNodeToRepairList (Repair ** repairList, Repair * node)
 
 // Transfer a car from the repair list to the available-for-rent list,
 
+//rm node from repair list 
+void rmRepairedCar (char * plateInput, Repair ** repairList)
+{
+    Repair * temp = *repairList;
+    int carCount = 0;
+    int carIndex;
+
+    while (temp != NULL)
+    {
+        carCount++;
+        temp = temp -> next;
+    }
+
+    temp = *repairList;
+
+    if (carCount == 0)
+    {
+        printf("There are currently no Cars in repair.\n");
+    }
+    else if (carCount == 1)
+    {
+        if (checkValidRepairedPlate(plateInput, temp, carIndex))
+        {
+            (*repairList) = (*repairList) -> next;
+            free(temp);
+        }
+        else
+        {
+            printf("Invalid Input\n");
+        }
+    }
+    else
+    {
+        bool validInput = checkValidRepairedPlate(plateInput, temp, carIndex);
+
+        if(validInput && carIndex == 1)
+        {
+            (*repairList) = (*repairList)->next;
+            free(temp);
+        }
+        else if(validInput)
+        {
+            for (int i = 0; i < carIndex; i++)
+            {
+                temp = temp->next;
+            }
+
+            Repair * delete = temp->next;
+            temp->next = temp->next->next;
+            delete->next = NULL;
+            free(delete);
+        }
+        else
+        {
+            printf("Invalid Input\n");
+        }
+    }
+
+    temp = *repairList;
+
+
+}
+
+bool checkValidRepairedPlate (char *plateInput, Repair * repairList, int * carIndex)
+{
+    Repair * temp = repairList; 
+    *carIndex = 0;
+
+    while (temp != NULL)
+    {
+        ++(*carIndex);
+        if (strcmp (temp->plate, plateInput) == 0)
+        {
+            return true;
+        }
+
+        temp = temp->next;
+    }
+
+    return false;
+}
+
+//
+
 // Rent the first available car,
 
 // Print all the lists
