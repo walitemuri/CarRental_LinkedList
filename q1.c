@@ -266,9 +266,37 @@ void addNodeToRepairList (Repair ** repairList, Repair * node)
 }
 
 // Transfer a car from the repair list to the available-for-rent list,
+void transferRepairedCar (Repair ** repairList, avRent ** avRentList)
+{
+    char* plateInput = malloc(sizeof(char) * 50);
+
+    printf("Enter plate: ");
+    fgets(plateInput, 50, stdin);
+    printf("\n");
+
+    int carMileage = rmRepairedCar(plateInput, *repairList);
+
+    if (carMileage != -1 || carMileage != 0)
+    {
+        avRent * newNode = malloc(sizeof(avRent));
+
+        newNode->mileage = carMileage;
+        strcpy(newNode->plate, plateInput);
+        newNode->next  = NULL;
+
+        addCarToAvRentList(*avRentList, newNode);
+        return;
+    }
+    else
+    {
+        printf("Error\n");
+        return;
+    }
+
+}
 
 //rm node from repair list 
-void rmRepairedCar (char * plateInput, Repair ** repairList)
+int rmRepairedCar (char * plateInput, Repair ** repairList)
 {
     Repair * temp = *repairList;
     int carCount = 0;
@@ -290,6 +318,7 @@ void rmRepairedCar (char * plateInput, Repair ** repairList)
     {
         if (checkValidRepairedPlate(plateInput, temp, carIndex))
         {
+            return temp->mileage;
             (*repairList) = (*repairList) -> next;
             free(temp);
         }
@@ -317,16 +346,18 @@ void rmRepairedCar (char * plateInput, Repair ** repairList)
             Repair * delete = temp->next;
             temp->next = temp->next->next;
             delete->next = NULL;
+            int miles = delete->mileage;
             free(delete);
+            return miles;
         }
         else
         {
             printf("Invalid Input\n");
+            return -1;
         }
     }
 
-    temp = *repairList;
-
+    return 0;
 
 }
 
