@@ -309,7 +309,7 @@ void rmRepairedCar (char * plateInput, Repair ** repairList)
         }
         else if(validInput)
         {
-            for (int i = 0; i < carIndex; i++)
+            for (int i = 1; i < carIndex - 1; i++)
             {
                 temp = temp->next;
             }
