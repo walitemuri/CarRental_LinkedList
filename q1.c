@@ -215,7 +215,13 @@ void addReturnedCarToRep (Rented ** currRentedList , Repair ** repairList)
     {
         rmReturnedCar(*currRentedList, plateInput);
 
+        Repair * newNode = malloc(sizeof(Repair));
 
+        newNode -> mileage = mileage;
+
+        strcpy(newNode->plate , plateInput);
+
+        addNodeToRepairList(temp, newNode);
     }
     else
     {
