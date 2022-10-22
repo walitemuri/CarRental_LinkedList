@@ -380,10 +380,118 @@ bool checkValidRepairedPlate (char *plateInput, Repair * repairList, int * carIn
     return false;
 }
 
-void addCarToRentList (Rented ** rentList, Rented * node)
+void deleteHeadAv (avRent ** avRentList)
 {
+    if (*avRentList == NULL)
+    {
+        return NULL;
+    }
+
+    (*avRentList) = (*avRentList)->next;
     
 }
+
+void addCarToRentList (Rented ** rentList, avRent ** avRentList)
+{
+    int expectReturn;
+    Rented * node = malloc(sizeof(Rented));
+    node->next = NULL;
+    printf("Enter Expected Return Date (yymmdd): ");
+    scanf("%d", &expectReturn);
+
+    avRent * avList = *avRentList;
+
+    node->mileage = avList->mileage;
+    strcpy(node->plate , avList->plate);
+    node->expectedReturn = expectReturn;
+
+    deleteHeadAv(avRentList);
+
+    int year = getYear(expectReturn);
+    int month = getMonth(expectReturn);
+    int day = getDay(expectReturn);
+
+    if (*rentList == NULL) 
+    {
+        *rentList = node;    
+    }
+
+    Rented * temp = *rentList;
+
+    while(temp -> next != NULL && isEarlier((temp -> next) -> expectedReturn, node->expectedReturn))
+    {
+        temp = temp -> next;
+    }
+
+    node -> next = temp-> next;
+    temp->next = node;
+
+}
+
+bool isEarlier (int expR1 , int expR2) 
+{
+    int y1 = getYear(expR1);
+    int m1 = getMonth(expR1);
+    int d1 = getDay(expR1);
+
+    int y2 = getYear(expR2);
+    int m2 = getMonth(expR2);
+    int d2 = getDay(expR2);
+
+    if (y1 > y2)
+    {
+        return false;
+    }
+    else if (y1 == y2)
+    {
+        if (m1 > m2)
+        {
+            return false;
+        }
+        else if (m1 == m2)
+        {
+            if (d1 > d2)
+            {
+                return false;
+            }
+            else if (d1 == d2)
+            {
+                return true;
+            }
+            else
+            {
+                return true;
+            }
+        }
+        else
+        {
+            return true;
+        }
+    }
+    else
+    {
+        return true;
+    }
+
+    return true;
+}
+
+int getYear(int n)
+{
+    return n/10000;
+}
+
+int getMonth(int n)
+{
+    int placeH = n / 100;
+    return placeH % 100;
+}
+
+int getDay(int n) 
+{
+    return n % 10000;
+}
+
 
 // Rent the first available car,
 void rentFirstAvailableCar(avRent ** AvList, Rented ** RentedList)
