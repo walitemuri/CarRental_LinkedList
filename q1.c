@@ -1,6 +1,7 @@
 /* Wali Temuri 1183379 */
-
+#include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include <stdbool.h>
 
 /*
@@ -40,6 +41,91 @@ typedef struct Repairing
     struct Repairing *next;
 }Repair;
 
+avRent * createRentalCar();
+void addCarToAvRentList (avRent ** carList , avRent * node);
+void addReturnedCarToAv (Rented ** carList, avRent ** rentList);
+void rmReturnedCar (Rented ** rented, char * plate);
+void addReturnedCarToRep (Rented ** currRentedList , Repair ** repairList);
+bool checkValidReturnPlate (Rented * currRentedList, char * plate);
+void addNodeToRepairList (Repair ** repairList, Repair * node);
+void transferRepairedCar (Repair ** repairList, avRent ** avRentList);
+int rmRepairedCar (char * plateInput, Repair ** repairList);
+bool checkValidRepairedPlate (char *plateInput, Repair * repairList, int * carIndex);
+void deleteHeadAv (avRent ** avRentList);
+void addCarToRentList (Rented ** rentList, avRent ** avRentList);
+bool isEarlier (int expR1 , int expR2);
+int getYear(int n);
+int getMonth(int n);
+int getDay(int n);
+
+
+int main(void)
+{
+    int userInput;
+    avRent * avPtr = NULL;
+    avRent * avHead = NULL;
+
+    Rented * rentPtr = NULL;
+    Rented * rentHead = NULL;
+
+    Repair * repairPtr = NULL;
+    Repair * repairHead = NULL;
+
+    do
+    {
+        // Print Menu
+        printf("1 - Add a new car to the available for rent list\n");
+        printf("2 - Add a returned car to the available-for-rent list\n");
+        printf("3 - Add a returned car to the repair list\n");
+        printf("4 - Transfer a car from the repair list to the available-for-rent list\n");
+        printf("5 - Rent the first available car\n");
+        printf("6 - Print all the lists\n");
+        printf("7 - Quit\n");
+
+        userInput = scanf("%d", &userInput);
+
+        switch (userInput)
+        {
+        case 1:
+            if (avHead == NULL)
+            {
+                avHead = createRentalCar(avHead);
+            }
+            else
+            {
+                avPtr = createRentalCar(avPtr);
+                addCarToAvRentList(&avHead, avPtr);
+            }
+            break;
+        case 2:
+            addReturnedCarToAv(&rentHead, &avHead);
+            printf("");
+            break;
+        case 3:
+            addReturnedCarToRep(&rentHead, &repairHead);
+            printf("");
+            break;
+        case 4:
+            transferRepairedCar(&repairHead, &avHead);
+            printf("");
+            break;
+        case 5:
+            addCarToRentList(&rentHead, &avHead);
+            printf("");
+            break;
+        case 6:
+            printf("");
+            break;
+        case 7:
+            printf("");
+            break;
+        default:
+            break;
+        }
+
+    } while (userInput != 7);
+}
+
 /*
 Function: Creates a new rental car node for available rent list
 Input: void
@@ -60,37 +146,6 @@ avRent * createRentalCar()
     newCar -> next = NULL;
 
     return newCar;
-}
-
-/*
-Function: Adds a rental car to the Available to rent linked list given node
-Input: avRent ** carList, avRent * node
-Output: void
-*/
-void addCarToAvRentList (avRent ** carList , avRent * node)
-{
-    node -> next = NULL;
-
-    //Check for Empty List
-    if (*carList == NULL)
-    {
-        *carList = node;
-        return;
-    }
-
-    //Declaring key to allow sorting to occur 
-    avRent * temp = *carList;
-    int key = node -> mileage;
-
-    //Inserting node in its proper order (ascending)
-    while(temp -> next != NULL && (temp -> next) -> mileage < key)
-    {
-        temp = temp -> next;
-    }
-
-    node -> next = temp -> next;
-    temp -> next = node;
-
 }
 
 /*
@@ -491,65 +546,30 @@ int getDay(int n)
 {
     return n % 10000;
 }
-
-
-// Rent the first available car,
-void rentFirstAvailableCar(avRent ** AvList, Rented ** RentedList)
-{
-    int returnDate;
-
-    printf("Enter return date: ");
-    scanf("%d", &returnDate);
-}
 // Print all the lists
 
-// Quit
-
-int main(void)
+void addCarToAvRentList (avRent ** carList , avRent * node)
 {
-    int userInput;
-    avRent * avPtr = NULL;
-    avRent * avHead = NULL;
+    node -> next = NULL;
 
-    do
+    //Check for Empty List
+    if (*carList == NULL)
     {
-        // Print Menu
-        printf("1 - Add a new car to the available for rent list\n");
-        printf("2 - Add a returned car to the available-for-rent list\n");
-        printf("3 - Add a returned car to the repair list\n");
-        printf("4 - Transfer a car from the repair list to the available-for-rent list\n");
-        printf("5 - Rent the first available car\n");
-        printf("6 - Print all the lists\n");
-        printf("7 - Quit\n");
+        *carList = node;
+        return;
+    }
 
-        userInput = scanf("%d", &userInput);
+    //Declaring key to allow sorting to occur 
+    avRent * temp = *carList;
+    int key = node -> mileage;
 
-        switch (userInput)
-        {
-        case 1:
-            printf("");
-            break;
-        case 2:
-            printf("");
-            break;
-        case 3:
-            printf("");
-            break;
-        case 4:
-            printf("");
-            break;
-        case 5:
-            printf("");
-            break;
-        case 6:
-            printf("");
-            break;
-        case 7:
-            printf("");
-            break;
-        default:
-            break;
-        }
+    //Inserting node in its proper order (ascending)
+    while(temp -> next != NULL && (temp -> next) -> mileage < key)
+    {
+        temp = temp -> next;
+    }
 
-    } while (userInput != 7);
+    node -> next = temp -> next;
+    temp -> next = node;
+
 }
