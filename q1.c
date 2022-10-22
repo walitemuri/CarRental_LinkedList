@@ -12,7 +12,7 @@ Stores: Mileage, Car Plate, Address of next node
 typedef struct AvailableRent
 {
     int mileage;
-    char plate[160];
+    char plate [150];
     struct AvailableRent *next;
 }avRent;
 
@@ -24,7 +24,7 @@ Stores: Mileage, Car Plate, Expected Return (yymmdd), Address of next node
 typedef struct Rented
 {
     int expectedReturn;
-    char plate[160];
+    char plate[150];
     int mileage;
     struct Rented *next;
 }Rented;
@@ -36,7 +36,7 @@ Stores: Car Plate, Address of next node
 */
 typedef struct Repairing
 {
-    char plate[160];
+    char * plate;
     int mileage;
     struct Repairing *next;
 }Repair;
@@ -62,18 +62,19 @@ int getDay(int n);
 int main(void)
 {
     int userInput;
+    char str_i[20];
+
     avRent * avPtr = NULL;
     avRent * avHead = NULL;
 
-    //Rented * rentPtr = NULL;
+ //   Rented * rentPtr = NULL;
     Rented * rentHead = NULL;
 
    // Repair * repairPtr = NULL;
     Repair * repairHead = NULL;
 
-    do
-    {
-        // Print Menu
+    do 
+    {  // Print Menu
         printf("1 - Add a new car to the available for rent list\n");
         printf("2 - Add a returned car to the available-for-rent list\n");
         printf("3 - Add a returned car to the repair list\n");
@@ -82,48 +83,46 @@ int main(void)
         printf("6 - Print all the lists\n");
         printf("7 - Quit\n");
 
-        userInput = scanf("%d", &userInput);
+        fgets(str_i, 20, stdin);
+        userInput = strtol(str_i, NULL, 0);
+
+        if (userInput == 1)
+        {
+            if (avHead == NULL)
+               {
+                   avHead = createRentalCar(avHead);
+               }
+               else
+               {
+                   avPtr = createRentalCar(avPtr);
+                   addCarToAvRentList(&avHead, avPtr);
+               }
+        }
 
         switch (userInput)
         {
-        case 1:
-            if (avHead == NULL)
-            {
-                avHead = createRentalCar(avHead);
-            }
-            else
-            {
-                avPtr = createRentalCar(avPtr);
-                addCarToAvRentList(&avHead, avPtr);
-            }
-            break;
-        case 2:
-            addReturnedCarToAv(&rentHead, &avHead);
-            printf("");
-            break;
-        case 3:
-            addReturnedCarToRep(&rentHead, &repairHead);
-            printf("");
-            break;
-        case 4:
-            transferRepairedCar(&repairHead, &avHead);
-            printf("");
-            break;
-        case 5:
-            addCarToRentList(&rentHead, &avHead);
-            printf("");
-            break;
-        case 6:
-            printf("");
-            break;
-        case 7:
-            printf("");
-            break;
-        default:
-            break;
+            case 2:
+                addReturnedCarToAv(&rentHead, &avHead);
+                break;
+            case 3:
+                addReturnedCarToRep(&rentHead, &repairHead);
+                break;
+            case 4:
+                transferRepairedCar(&repairHead, &avHead);
+                break;
+            case 5:
+                addCarToRentList(&rentHead, &avHead);
+                break;
+            case 6:
+            printf("%s", avHead->plate);
+                break;
+            case 7:
+                break;
+            default:
+                break;
         }
-
-    } while (userInput != 7);
+                
+    } while(userInput != 7); 
 }
 
 /*
@@ -135,13 +134,17 @@ avRent * createRentalCar()
 {
     //Allocating memory for new node
     avRent *newCar = malloc(sizeof(avRent));
+    int mileage = 0;
 
     //Gathering Inputs
     printf("Enter plate: ");
-    fgets(newCar -> plate , sizeof(newCar -> plate), stdin);
+    scanf("%s" , newCar->plate);
+    newCar -> plate[strcspn(newCar -> plate, "\n")] = 0;
 
     printf("\nEnter mileage: ");
-    scanf("%d", &(newCar -> mileage));
+    scanf(" %d", &mileage);
+
+    newCar->mileage = mileage;
 
     newCar -> next = NULL;
 
@@ -162,9 +165,11 @@ void addReturnedCarToAv (Rented ** carList, avRent ** rentList)
     //Gathering Inputs
     printf("Enter plate: ");
     fgets(plateInput, 150, stdin);
+    plateInput[strcspn(plateInput, "\n")] = 0;
+
 
     printf("\nEnter Mileage: ");
-    scanf("%d" , &mileage);
+    scanf(" %d" , &mileage);
 
     Rented * temp = *carList;
 
@@ -260,9 +265,10 @@ void addReturnedCarToRep (Rented ** currRentedList , Repair ** repairList)
      //Gathering Inputs
     printf("Enter plate: ");
     fgets(plateInput, 150, stdin);
-
+    plateInput[strcspn(plateInput, "\n")] = 0;
+    
     printf("\nEnter Mileage: ");
-    scanf("%d" , &mileage);
+    scanf(" %d" , &mileage);
 
     Rented * temp = *currRentedList;
 
@@ -326,12 +332,16 @@ void transferRepairedCar (Repair ** repairList, avRent ** avRentList)
     char* plateInput = malloc(sizeof(char) * 50);
 
     printf("Enter plate: ");
-    fgets(plateInput, 50, stdin);
+    fgets(plateInput, 150, stdin);
+
+    plateInput[strcspn(plateInput, "\n")] = 0;
+
+
     printf("\n");
 
     int carMileage = rmRepairedCar(plateInput, &(*repairList));
 
-    if (carMileage != -1 || carMileage != 0)
+    if (carMileage != -1)
     {
         avRent * newNode = malloc(sizeof(avRent));
 
@@ -412,7 +422,7 @@ int rmRepairedCar (char * plateInput, Repair ** repairList)
         }
     }
 
-    return 0;
+    return -1;
 
 }
 
@@ -452,7 +462,7 @@ void addCarToRentList (Rented ** rentList, avRent ** avRentList)
     Rented * node = malloc(sizeof(Rented));
     node->next = NULL;
     printf("Enter Expected Return Date (yymmdd): ");
-    scanf("%d", &expectReturn);
+    scanf(" %d", &expectReturn);
 
     avRent * avList = *avRentList;
 
