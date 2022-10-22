@@ -65,10 +65,10 @@ int main(void)
     avRent * avPtr = NULL;
     avRent * avHead = NULL;
 
-    Rented * rentPtr = NULL;
+    //Rented * rentPtr = NULL;
     Rented * rentHead = NULL;
 
-    Repair * repairPtr = NULL;
+   // Repair * repairPtr = NULL;
     Repair * repairHead = NULL;
 
     do
@@ -173,7 +173,7 @@ void addReturnedCarToAv (Rented ** carList, avRent ** rentList)
     {
         if (strcmp(plateInput, temp -> plate) == 0)
         {
-            rmReturnedCar(*carList, plateInput);
+            rmReturnedCar(&(*carList), plateInput);
             
             avRent * returnedCar = malloc(sizeof(avRent));
 
@@ -268,7 +268,7 @@ void addReturnedCarToRep (Rented ** currRentedList , Repair ** repairList)
 
     if (checkValidReturnPlate(temp, plateInput))
     {
-        rmReturnedCar(*currRentedList, plateInput);
+        rmReturnedCar(&(*currRentedList), plateInput);
 
         Repair * newNode = malloc(sizeof(Repair));
 
@@ -276,7 +276,7 @@ void addReturnedCarToRep (Rented ** currRentedList , Repair ** repairList)
 
         strcpy(newNode->plate , plateInput);
 
-        addNodeToRepairList(temp, newNode);
+        addNodeToRepairList(&(*repairList), newNode);
     }
     else
     {
@@ -329,7 +329,7 @@ void transferRepairedCar (Repair ** repairList, avRent ** avRentList)
     fgets(plateInput, 50, stdin);
     printf("\n");
 
-    int carMileage = rmRepairedCar(plateInput, *repairList);
+    int carMileage = rmRepairedCar(plateInput, &(*repairList));
 
     if (carMileage != -1 || carMileage != 0)
     {
@@ -339,7 +339,7 @@ void transferRepairedCar (Repair ** repairList, avRent ** avRentList)
         strcpy(newNode->plate, plateInput);
         newNode->next  = NULL;
 
-        addCarToAvRentList(*avRentList, newNode);
+        addCarToAvRentList(&(*avRentList), newNode);
         return;
     }
     else
@@ -371,7 +371,7 @@ int rmRepairedCar (char * plateInput, Repair ** repairList)
     }
     else if (carCount == 1)
     {
-        if (checkValidRepairedPlate(plateInput, temp, carIndex))
+        if (checkValidRepairedPlate(plateInput, temp, &carIndex))
         {
             return temp->mileage;
             (*repairList) = (*repairList) -> next;
@@ -384,7 +384,7 @@ int rmRepairedCar (char * plateInput, Repair ** repairList)
     }
     else
     {
-        bool validInput = checkValidRepairedPlate(plateInput, temp, carIndex);
+        bool validInput = checkValidRepairedPlate(plateInput, temp, &carIndex);
 
         if(validInput && carIndex == 1)
         {
@@ -439,7 +439,7 @@ void deleteHeadAv (avRent ** avRentList)
 {
     if (*avRentList == NULL)
     {
-        return NULL;
+        return;
     }
 
     (*avRentList) = (*avRentList)->next;
@@ -461,10 +461,6 @@ void addCarToRentList (Rented ** rentList, avRent ** avRentList)
     node->expectedReturn = expectReturn;
 
     deleteHeadAv(avRentList);
-
-    int year = getYear(expectReturn);
-    int month = getMonth(expectReturn);
-    int day = getDay(expectReturn);
 
     if (*rentList == NULL) 
     {
