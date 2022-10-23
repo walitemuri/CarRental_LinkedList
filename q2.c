@@ -43,7 +43,7 @@ void reversePol_Evaluation(char []);
 int main(int c,char *argv[])
 {
 	reversePol_Evaluation(argv[1]);
-	printf("Evaluation of given expression is = %.2f\n", stack[top]);
+	printf("Evaluation = %.2f\n", stack[top]);
 }
 
 void reversePol_Evaluation(char s[size])
