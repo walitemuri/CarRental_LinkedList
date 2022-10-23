@@ -59,6 +59,7 @@ void deleteHeadAv (avRent ** avRentList);
 void addCarToRentList (Rented ** rentList, avRent ** avRentList);
 bool isEarlier (int expR1 , int expR2);
 void addNodeToRentList (Rented ** rentList, Rented * node);
+void printAllLists(Repair *, Rented *, avRent *);
 int getYear(int n);
 int getMonth(int n);
 int getDay(int n);
@@ -85,14 +86,13 @@ int main(void)
    // Repair * repairPtr = NULL;
     Repair * repairHead = NULL;
 
-    //loadAv(&avHead);
+     // loadAv(&avHead);
     //loadRented(&rentHead);
     //loadRepair(&repairHead);
     
 
     do 
     {  
-
         // Print Menu
         printf("1 - Add a new car to the available for rent list\n");
         printf("2 - Add a returned car to the available-for-rent list\n");
@@ -133,7 +133,7 @@ int main(void)
                 addCarToRentList(&rentHead, &avHead);
                 break;
             case 6:
-            printf("%s", avHead->plate);
+                printAllLists(repairHead, rentHead, avHead);
                 break;
             case 7:
                 saveAvRentListToFile(avHead);
@@ -200,7 +200,7 @@ void addReturnedCarToAv (Rented ** carList, avRent ** rentList)
     {
         if (strcmp(plateInput, temp -> plate) == 0)
         {
-            rmReturnedCar(&(*carList), plateInput);
+            rmReturnedCar((carList), plateInput);
             
             avRent * returnedCar = malloc(sizeof(avRent));
 
@@ -283,6 +283,7 @@ void addReturnedCarToRep (Rented ** currRentedList , Repair ** repairList)
 {
     char * plateInput = malloc(sizeof(char)* 50);
     int mileage;
+    char str_i[20];
 
      //Gathering Inputs
     printf("Enter plate: ");
@@ -290,13 +291,14 @@ void addReturnedCarToRep (Rented ** currRentedList , Repair ** repairList)
     plateInput[strcspn(plateInput, "\n")] = 0;
     
     printf("\nEnter Mileage: ");
-    scanf(" %d" , &mileage);
+    fgets(str_i, 20, stdin);
+    mileage = strtol(str_i, NULL, 0);
 
     Rented * temp = *currRentedList;
 
     if (checkValidReturnPlate(temp, plateInput))
     {
-        rmReturnedCar(&(*currRentedList), plateInput);
+       // rmReturnedCar((currRentedList), plateInput);
 
         Repair * newNode = malloc(sizeof(Repair));
 
@@ -304,7 +306,7 @@ void addReturnedCarToRep (Rented ** currRentedList , Repair ** repairList)
 
         strcpy(newNode->plate , plateInput);
 
-        addNodeToRepairList(&(*repairList), newNode);
+        addNodeToRepairList(repairList, newNode);
     }
     else
     {
@@ -808,4 +810,38 @@ void loadRepair (Repair ** repairList)
     }
 
     fclose(fptr);
+}
+
+void printAllLists(Repair * repairList, Rented * rentedList, avRent * avRentList)
+{
+    printf("\n-----------------------------------------------");
+    printf("\n");
+
+    printf("Repair List:\n\n");
+
+    while (repairList != NULL)
+    {
+        printf("Plate: %s, Mileage: %d\n" , repairList->plate, repairList->mileage);
+        repairList = repairList->next;
+    }
+
+    printf("\n\n");
+
+    printf("Rented Car List:\n\n");
+
+    while (rentedList != NULL)
+    {
+        printf("Plate: %s, Mileage: %d, Expected Return Date(yymmdd): %d\n", rentedList->plate, rentedList->mileage, rentedList->expectedReturn);
+        rentedList = rentedList->next;
+    }
+
+    printf("\n\n");
+
+    printf("Cars Available For Rental:\n\n");
+
+    while (avRentList != NULL)
+    {
+        printf("Plate: %s, Mileage: %d\n", rentedList->plate, rentedList->mileage);
+        avRentList = avRentList->next;
+    }
 }
