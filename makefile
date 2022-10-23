@@ -9,4 +9,4 @@ q2: q2.c
 clean:
 	rm *.o
 	rm *q1
-	rm*q2
+	rm *q2

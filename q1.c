@@ -1,4 +1,8 @@
-/* Wali Temuri 1183379 */
+/*
+    File Owned By: Wali Temuri 1183379
+    CIS-2520 A2, Question # 1
+*/
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>

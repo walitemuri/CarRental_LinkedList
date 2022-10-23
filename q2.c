@@ -1,49 +1,85 @@
+
+/*
+    File Owned By: Wali Temuri 1183379
+    CIS-2520 A2, Question # 2
+*/
+
+//Including all the libraries
+
 #include<stdio.h>
 #include<stdlib.h>
 #include<math.h>
 
-int top=-1,size;
+//Initialize Variables for the Stack
+int top = -1;
+int size;
 
-float  stack[100];
+float stack [100];
 
-void Postfix_Evaluation(char []);
-
+/*
+    Function: Pushes float input onto the stack
+    in: float 
+    out: void
+*/
 void push(float);
 
+/*
+    Function: Pops the element at the top of the Stack
+    in: float 
+    out: void
+*/
 int pop(void);
+
+
+/*
+    Function: This function is responsible for the final computation of the Equation
+    in: char []
+    out: void
+*/
+void reversePol_Evaluation(char []);
+
+/* Main Begins */
 
 int main(int c,char *argv[])
 {
-	Postfix_Evaluation(argv[1]);
-	printf("Evaluation of given expression is=%.2f\n",stack[top]);
+	reversePol_Evaluation(argv[1]);
+	printf("Evaluation of given expression is = %.2f\n", stack[top]);
 }
 
-void Postfix_Evaluation(char s[size])
+void reversePol_Evaluation(char s[size])
 {
-	int i,data1,data2;
+    //Declaring variables to perform operations
+	int i,d1,d2;
+
 	printf("%s\n",s);
+    
+    //Looping through the String to push appropriate elemnts on stack and perform arithemetic operations
 	for(i=0;s[i]!='\0';i++)
 	{
+        //Checking for operators
 		if(s[i]=='+' || s[i]=='-' || s[i]=='*' || s[i]=='/')
 		{
-			data1=pop();
-			data2=pop();
+            //Popping first two ints when found operator
+			d1=pop();
+			d2=pop();
+            
+            //Handles which operation to perform
 			switch(s[i])
 			{
 				case '+':
-					push(data2+data1);
+					push(d2+d1);
 					break;
 				
 				case '-':
-					push(data2-data1);
+					push(d2-d1);
 					break;
 				
 				case '*':
-					push(data2*data1);
+					push(d2*d1);
 					break;
 				
 				case '/':
-					push((float)data2/data1);
+					push((float)d2/d1);
 					break;
 					
 	
@@ -51,7 +87,10 @@ void Postfix_Evaluation(char s[size])
 			
 			}
 		}
-		else
+        //Handles the case where there is a digit
+		
+        
+        else
 		{
             switch(s[i])
             {
