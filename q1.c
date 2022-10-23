@@ -54,10 +54,18 @@ bool checkValidRepairedPlate (char *plateInput, Repair * repairList, int * carIn
 void deleteHeadAv (avRent ** avRentList);
 void addCarToRentList (Rented ** rentList, avRent ** avRentList);
 bool isEarlier (int expR1 , int expR2);
+void addNodeToRentList (Rented ** rentList, Rented * node);
 int getYear(int n);
 int getMonth(int n);
 int getDay(int n);
 
+void saveRepairListToFile (Repair * repairList);
+void saveAvRentListToFile (avRent * avList);
+void saveRentedListToFile (Rented * rentList);
+
+void loadTweetsAv (avRent ** avRentList);
+void loadTweetsRented (Rented ** avRentList);
+void loadTweetsRepair (Repair ** avRentList);
 
 int main(void)
 {
@@ -578,4 +586,215 @@ void addCarToAvRentList (avRent ** carList , avRent * node)
     node -> next = temp -> next;
     temp -> next = node;
 
+}
+
+void saveRepairListToFile (Repair * repairList)
+{
+    FILE * fptr;
+
+    fptr = fopen("repairList.txt", "w+");
+
+    if (fptr == NULL)
+    {
+        printf("Error opening file\n");
+    }
+
+    Repair * temp = repairList;
+
+    while(temp != NULL)
+    {
+        if(temp->next == NULL)
+        {
+            fprintf(fptr, "%s, %d",temp->plate, temp->mileage);
+        }
+        else
+        {
+            fprintf(fptr, "%s, %d\n", temp->plate, temp->mileage);
+        }
+
+        temp = temp->next;
+    }
+}
+
+void saveAvRentListToFile (avRent * avList)
+{
+    FILE * fptr;
+
+    fptr = fopen("avRent.txt", "w+");
+
+    if (fptr == NULL)
+    {
+        printf("Error opening file\n");
+    }
+
+    avRent * temp = avList;
+
+    while(temp != NULL)
+    {
+        if(temp->next == NULL)
+        {
+            fprintf(fptr, "%s, %d",temp->plate, temp->mileage);
+        }
+        else
+        {
+            fprintf(fptr, "%s, %d\n", temp->plate, temp->mileage);
+        }
+
+        temp = temp->next;
+    }
+}
+
+void saveRentedListToFile (Rented * rentList)
+{
+    FILE * fptr;
+
+    fptr = fopen("rentedList.txt", "w+");
+
+    if (fptr == NULL)
+    {
+        printf("Error opening file\n");
+    }
+
+    Rented * temp = rentList;
+
+    while(temp != NULL)
+    {
+        if(temp->next == NULL)
+        {
+            fprintf(fptr, "%s, %d, %d",temp->plate, temp->mileage, temp->expectedReturn);
+        }
+        else
+        {
+            fprintf(fptr, "%s, %d, %d\n", temp->plate, temp->mileage, temp->expectedReturn);
+        }
+
+        temp = temp->next;
+    }
+
+    fclose(fptr);
+}
+
+void loadAv (avRent ** avRentList)
+{
+    char *token;
+    FILE * fptr;
+
+    fptr = fopen("avRent.txt", "r");
+
+    if (fptr == NULL)
+    {
+        printf("Error loading from file\n");
+    }
+
+    char line[200];
+    int length = 0;
+
+    while (fgets(line, 200, fptr) != NULL)
+    {
+        avRent * newNode = malloc(sizeof(avRent));
+        token = strtok(line, ",");
+
+        strcpy(newNode->plate , token);
+        token = strtok(NULL, ",");
+
+        newNode->mileage = atoi(token);
+
+        newNode->next = NULL;
+
+        addCarToAvRentList(avRentList, newNode);
+    }
+
+    fclose(fptr);
+
+}
+
+void loadRented (Rented ** rentList)
+{
+    char *token;
+    FILE * fptr;
+
+    fptr = fopen("rentedList.txt", "r");
+
+    if (fptr == NULL)
+    {
+        printf("Error loading from file\n");
+    }
+
+    char line[200];
+    int length = 0;
+
+    while (fgets(line, 200, fptr) != NULL)
+    {
+        Rented * newNode = malloc(sizeof(Rented));
+        token = strtok(line, ",");
+
+        strcpy(newNode->plate , token);
+        token = strtok(NULL, ",");
+
+        newNode->mileage = atoi(token);
+
+        token = strtok(NULL, ",");
+
+        newNode->expectedReturn = atoi(token);
+
+        newNode->next = NULL;
+
+        addNodeToRentList(rentList, newNode);
+    }
+
+    fclose(fptr);
+}
+
+void addNodeToRentList (Rented ** rentList, Rented * node)
+{
+    node->next = NULL;
+
+    if (*rentList == NULL)
+    {
+        *rentList = node;
+    }
+
+    Rented * temp = *rentList;
+
+    while(temp -> next != NULL && isEarlier((temp -> next) -> expectedReturn, node->expectedReturn))
+    {
+        temp = temp -> next;
+    }
+
+    node -> next = temp-> next;
+    temp->next = node;
+
+}
+
+void loadRepair (Repair ** repairList)
+{
+    char *token;
+    FILE * fptr;
+
+    fptr = fopen("repairList.txt", "r");
+
+    if (fptr == NULL)
+    {
+        printf("Error loading from file\n");
+    }
+
+    char line[200];
+    int length = 0;
+
+    while (fgets(line, 200, fptr) != NULL)
+    {
+        Repair * newNode = malloc(sizeof(Repair));
+        token = strtok(line, ",");
+
+        strcpy(newNode->plate , token);
+        token = strtok(NULL, ",");
+
+        newNode->mileage = atoi(token);
+
+        newNode->next = NULL;
+
+        addNodeToRepairList(repairList,  newNode);
+    }
+
+    fclose(fptr);
 }
