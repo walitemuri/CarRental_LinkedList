@@ -15,7 +15,7 @@ int pop(void);
 int main(int c,char *argv[])
 {
 	Postfix_Evaluation(argv[1]);
-	printf("Evaluation of given expression is = %.2f\n",stack[top]);
+	printf("Evaluation of given expression is=%.2f\n",stack[top]);
 }
 
 void Postfix_Evaluation(char s[size])
@@ -45,6 +45,10 @@ void Postfix_Evaluation(char s[size])
 				case '/':
 					push((float)data2/data1);
 					break;
+					
+	
+					
+			
 			}
 		}
 		else

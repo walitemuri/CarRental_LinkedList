@@ -63,9 +63,9 @@ void saveRepairListToFile (Repair * repairList);
 void saveAvRentListToFile (avRent * avList);
 void saveRentedListToFile (Rented * rentList);
 
-void loadTweetsAv (avRent ** avRentList);
-void loadTweetsRented (Rented ** avRentList);
-void loadTweetsRepair (Repair ** avRentList);
+void loadAv (avRent ** avRentList);
+void loadRented (Rented ** avRentList);
+void loadRepair (Repair ** avRentList);
 
 int main(void)
 {
@@ -81,8 +81,15 @@ int main(void)
    // Repair * repairPtr = NULL;
     Repair * repairHead = NULL;
 
+    //loadAv(&avHead);
+    //loadRented(&rentHead);
+    //loadRepair(&repairHead);
+    
+
     do 
-    {  // Print Menu
+    {  
+
+        // Print Menu
         printf("1 - Add a new car to the available for rent list\n");
         printf("2 - Add a returned car to the available-for-rent list\n");
         printf("3 - Add a returned car to the repair list\n");
@@ -125,6 +132,9 @@ int main(void)
             printf("%s", avHead->plate);
                 break;
             case 7:
+                saveAvRentListToFile(avHead);
+                saveRentedListToFile(rentHead);
+                saveRepairListToFile(repairHead);
                 break;
             default:
                 break;
@@ -694,7 +704,7 @@ void loadAv (avRent ** avRentList)
         token = strtok(line, ",");
 
         strcpy(newNode->plate , token);
-        token = strtok(NULL, ",");
+        token = strtok(NULL, "\n");
 
         newNode->mileage = atoi(token);
 
@@ -731,7 +741,7 @@ void loadRented (Rented ** rentList)
 
         newNode->mileage = atoi(token);
 
-        token = strtok(NULL, ",");
+        token = strtok(NULL, "\n");
 
         newNode->expectedReturn = atoi(token);
 
@@ -784,7 +794,7 @@ void loadRepair (Repair ** repairList)
         token = strtok(line, ",");
 
         strcpy(newNode->plate , token);
-        token = strtok(NULL, ",");
+        token = strtok(NULL, "\n");
 
         newNode->mileage = atoi(token);
 
