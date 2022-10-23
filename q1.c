@@ -687,7 +687,6 @@ void loadAv (avRent ** avRentList)
     }
 
     char line[200];
-    int length = 0;
 
     while (fgets(line, 200, fptr) != NULL)
     {
@@ -721,7 +720,6 @@ void loadRented (Rented ** rentList)
     }
 
     char line[200];
-    int length = 0;
 
     while (fgets(line, 200, fptr) != NULL)
     {
@@ -779,7 +777,6 @@ void loadRepair (Repair ** repairList)
     }
 
     char line[200];
-    int length = 0;
 
     while (fgets(line, 200, fptr) != NULL)
     {
